@@ -3,10 +3,14 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { google, youtube_v3 } from 'googleapis';
 import { z } from 'zod';
 import { OAuth2Client } from 'google-auth-library';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';
 
 const API_KEY = process.env.YOUTUBE_API_KEY;
 const CLIENT_ID = process.env.YOUTUBE_CLIENT_ID;
 const CLIENT_SECRET = process.env.YOUTUBE_CLIENT_SECRET;
+const TOKEN_PATH = path.join(os.homedir(), '.youtube-mcp-tokens.json');
 
 if (!API_KEY) {
   console.error('YOUTUBE_API_KEY environment variable is required');
@@ -29,6 +33,18 @@ if (CLIENT_ID && CLIENT_SECRET) {
     CLIENT_SECRET,
     'http://localhost' // For installed applications
   );
+
+  // Load saved tokens on startup so auth persists across restarts
+  if (fs.existsSync(TOKEN_PATH)) {
+    try {
+      const saved = JSON.parse(fs.readFileSync(TOKEN_PATH, 'utf8'));
+      oauth2Client.setCredentials(saved);
+      authenticatedYoutube = google.youtube({ version: 'v3', auth: oauth2Client });
+      console.error('YouTube OAuth tokens loaded from disk.');
+    } catch {
+      console.error('Failed to load saved tokens — re-authentication required.');
+    }
+  }
 }
 
 // Create MCP server
@@ -141,6 +157,15 @@ server.tool(
     try {
       const { tokens } = await oauth2Client.getToken(authCode);
       oauth2Client.setCredentials(tokens);
+
+      // Persist tokens to disk so auth survives restarts
+      fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens, null, 2));
+
+      // Auto-refresh access token using refresh token when it expires
+      oauth2Client.on('tokens', (refreshed) => {
+        const current = JSON.parse(fs.readFileSync(TOKEN_PATH, 'utf8'));
+        fs.writeFileSync(TOKEN_PATH, JSON.stringify({ ...current, ...refreshed }, null, 2));
+      });
 
       // Create authenticated YouTube client
       authenticatedYoutube = google.youtube({
