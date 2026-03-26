@@ -69,3 +69,10 @@ Thumbs.db
 # Temporary files
 tmp/
 temp/
+
+# Google OAuth credential files and token storage
+*credentials*.json
+*client_secret*.json
+*oauth*.json
+.youtube-mcp-tokens.json
+~/.youtube-mcp-tokens.json

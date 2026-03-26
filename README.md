@@ -74,7 +74,7 @@ To complete the OAuth flow at runtime:
 3. Copy the authorization code from the redirect URL.
 4. Call `authenticate_youtube` again with the `authCode` to complete authentication.
 
-OAuth credentials are held in memory for the duration of the session. You will need to re-authenticate each time the server restarts.
+OAuth tokens are persisted to `~/.youtube-mcp-tokens.json` after a successful authentication. On subsequent server starts, the saved tokens are loaded automatically — you only need to authenticate once. If the tokens expire or are revoked, repeat the OAuth flow above to refresh them.
 
 ## Available Tools
 
