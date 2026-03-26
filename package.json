@@ -1,0 +1,32 @@
+{
+  "name": "youtube-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for YouTube playlist management — create, delete, and reorganize playlists via Claude",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node build/index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "youtube",
+    "music",
+    "playlist",
+    "api"
+  ],
+  "author": "MetalOath",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "googleapis": "^144.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
+  }
+}
