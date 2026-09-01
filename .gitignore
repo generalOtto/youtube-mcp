@@ -76,3 +76,6 @@ temp/
 *oauth*.json
 .youtube-mcp-tokens.json
 ~/.youtube-mcp-tokens.json
+
+# Local one-off utility scripts
+reorganize-playlist.mjs
