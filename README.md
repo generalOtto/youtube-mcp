@@ -83,8 +83,8 @@ OAuth tokens are persisted to `~/.youtube-mcp-tokens.json` after a successful au
 | `authenticate_youtube` | Start or complete the OAuth flow to enable write access |
 | `get_auth_status` | Check whether OAuth authentication is currently active |
 | `list_my_channels` | List all YouTube channels associated with the authenticated account |
-| `list_playlists` | List playlists for a given channel ID |
-| `list_channel_playlists` | List playlists for the authenticated user's own channel |
+| `list_playlists` | List playlists for the authenticated user's own channel |
+| `list_channel_playlists` | List playlists for a given channel ID |
 | `create_playlist` | Create a new playlist with a title, description, and privacy setting |
 | `edit_playlist` | Update the title, description, or privacy of an existing playlist |
 | `delete_playlist` | Delete a playlist by ID |
